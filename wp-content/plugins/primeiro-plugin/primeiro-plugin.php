@@ -26,9 +26,8 @@ function itw_instagram_integration_page() {
 
     echo '<div class="wrap">';
     echo '<h1>Integrar com Instagram</h1>';
-    echo '<a href="' . $auth_url . '">Conectar com Instagram </a>';
+    echo '<a href="' . $auth_url . '">Conectar com Instagram</a>';
     itw_display_instagram_posts();
-    
     echo '</div>';
 }
 
@@ -55,9 +54,53 @@ function itw_display_instagram_posts() {
             echo '<div>';
             echo '<img src="' . $post['media_url'] . '" alt="' . htmlspecialchars($post['caption']) . '" style="max-width:100%;">';
             echo '<p>' . htmlspecialchars($post['caption']) . '</p>';
+            echo '<form method="post">';
+            echo '<input type="hidden" name="post_id" value="' . $post['id'] . '">';
+            echo '<input type="submit" name="create_post" value="Criar Post no WordPress">';
+            echo '</form>';
             echo '</div>';
         }
     } else {
         echo 'Nenhum post encontrado.';
     }
+}
+
+if (isset($_POST['create_post'])) {
+    add_action('admin_post_create_instagram_post', 'itw_create_instagram_post');
+}
+
+function itw_create_instagram_post() {
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+
+    $access_token = get_option('instagram_access_token');
+    if (!$access_token) {
+        echo 'Você precisa conectar-se ao Instagram primeiro.';
+        return;
+    }
+
+    $post_id = sanitize_text_field($_POST['post_id']);
+    $url = "https://graph.instagram.com/{$post_id}?fields=id,caption,media_url&access_token={$access_token}";
+
+    $response = file_get_contents($url);
+    if ($response === FALSE) {
+        echo 'Erro ao obter dados do Instagram.';
+        return;
+    }
+
+    $data = json_decode($response, true);
+    $post_content = '<img src="' . $data['media_url'] . '" alt="' . htmlspecialchars($data['caption']) . '" style="max-width:100%;">';
+
+    $post_data = array(
+        'post_title' => wp_strip_all_tags($data['caption']),
+        'post_content' => $post_content,
+        'post_status' => 'publish',
+        'post_author' => get_current_user_id(),
+    );
+
+    wp_insert_post($post_data);
+
+    wp_redirect(admin_url('admin.php?page=itw-instagram-integration'));
+    exit;
 }

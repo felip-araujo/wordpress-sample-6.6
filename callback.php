@@ -1,11 +1,11 @@
 <?php
 if (isset($_GET['code'])) {
-    $code = 'IGQWRPWnNlb0xRbGtORzI2RXp0MEhRdDk0UTVVWmstdklHSzR3VkctSUtpM1NiQjZA6Y09oc1pDaTJNNVo3VS1CT3Mwcl9uMjNxc2x3R0hYcWgtS0NfRVlWYVVEYzJNdmczRmFFNi1iZAGlPUWgybkdJbk1CdmdmbU0ZD';
+    $code = $_GET['code'];
 
     // Troque o 'code' por um access token
     $client_id = '402263972266647';
     $client_secret = '567dacce86e5a86f880aea73ab490844';
-    $redirect_uri = 'http://localhost/callback.php'; // Mude para a URL correta do seu site
+    $redirect_uri = 'https://evoludesign.com.br/wordpress/callback.php'; // Mude para a URL correta do seu site
 
     $url = 'https://api.instagram.com/oauth/access_token';
     $data = array(
@@ -28,7 +28,6 @@ if (isset($_GET['code'])) {
     $result = file_get_contents($url, false, $context);
     if ($result === FALSE) { 
         // Handle error
-        echo $code;
         die('Erro ao trocar o code pelo token de acesso');
     }
 
@@ -39,7 +38,10 @@ if (isset($_GET['code'])) {
     update_option('instagram_access_token', $access_token);
 
     echo 'Token de Acesso: ' . $access_token;
+
+    // Redirecione de volta para a página do plugin
+    wp_redirect(admin_url('admin.php?page=itw-instagram-integration'));
+    exit;
 } else {
     echo 'Erro: Nenhum código de autorização fornecido.';
 }
-?>
