@@ -9,6 +9,9 @@ function debug_log($message) {
     error_log($message, 3, __DIR__ . '/debug.log');
 }
 
+// Carregar o WordPress
+require_once __DIR__ . '/wp-load.php';
+
 if (isset($_GET['code'])) {
     $code = $_GET['code'];
     debug_log("Código recebido: $code\n");
@@ -63,3 +66,4 @@ if (isset($_GET['code'])) {
     debug_log("Erro: Nenhum código de autorização fornecido.\n");
     echo 'Erro: Nenhum código de autorização fornecido.';
 }
+?>
