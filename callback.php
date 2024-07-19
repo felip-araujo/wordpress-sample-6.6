@@ -26,18 +26,22 @@ if (isset($_GET['code'])) {
 
     $context  = stream_context_create($options);
     $result = file_get_contents($url, false, $context);
-    if ($result === FALSE) { 
+    if ($result === FALSE) {
         // Handle error
         die('Erro ao trocar o code pelo token de acesso');
     }
 
     $response = json_decode($result, true);
+    if (!isset($response['access_token'])) {
+        die('Erro ao obter o token de acesso.');
+    }
+
     $access_token = $response['access_token'];
 
     // Armazene o token de acesso de forma segura, por exemplo, no banco de dados do WordPress
     update_option('instagram_access_token', $access_token);
 
-    echo 'Token de Acesso: ' . $access_token;
+    echo 'Token de Acesso: ' . esc_html($access_token);
 
     // Redirecione de volta para a página do plugin
     wp_redirect(admin_url('admin.php?page=itw-instagram-integration'));
