@@ -28,6 +28,7 @@ if (isset($_GET['code'])) {
     $result = file_get_contents($url, false, $context);
     if ($result === FALSE) { 
         // Handle error
+        echo $code;
         die('Erro ao trocar o code pelo token de acesso');
     }
 
