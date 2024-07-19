@@ -23,7 +23,7 @@
 define( 'DB_NAME', 'u789700470_wptest' );
 
 /** Database username */
-define( 'DB_USER', 'felipe' );
+define( 'DB_USER', 'u789700470_felipe' );
 
 /** Database password */
 define( 'DB_PASSWORD', 'Fe159753#' );
