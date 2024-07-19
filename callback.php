@@ -1,6 +1,6 @@
 <?php
 if (isset($_GET['code'])) {
-    $code = $_GET['code'];
+    $code = 'IGQWRPWnNlb0xRbGtORzI2RXp0MEhRdDk0UTVVWmstdklHSzR3VkctSUtpM1NiQjZA6Y09oc1pDaTJNNVo3VS1CT3Mwcl9uMjNxc2x3R0hYcWgtS0NfRVlWYVVEYzJNdmczRmFFNi1iZAGlPUWgybkdJbk1CdmdmbU0ZD';
 
     // Troque o 'code' por um access token
     $client_id = '402263972266647';
