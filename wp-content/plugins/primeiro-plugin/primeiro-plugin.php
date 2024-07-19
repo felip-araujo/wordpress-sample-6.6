@@ -21,7 +21,7 @@ add_action('admin_menu', 'itw_add_menu');
 
 function itw_instagram_integration_page() {
     $client_id = '402263972266647';
-    $redirect_uri = 'https://localhost/site-teste/wordpress/callback.php'; // Mude para a URL correta do seu site
+    $redirect_uri = 'https://evoludesign.com.br/wordpress/callback.php'; // Mude para a URL correta do seu site
     $auth_url = "https://api.instagram.com/oauth/authorize?client_id={$client_id}&redirect_uri={$redirect_uri}&scope=user_profile,user_media&response_type=code";
 
     echo '<div class="wrap">';
